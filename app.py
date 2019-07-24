@@ -15,31 +15,29 @@ def index():
 
 
 @app.route('/', methods=['OPTIONS'])
-@app.route('/api')
+@app.route('/api', methods=['GET', 'OPTIONS'])
 def api_options():
     return app.response_class(
         mimetype='text/plain',
         response='''How to use the /api/text, /api/image, and /api/video API endpoints:
 
-$ curl -X POST -d 'Hello, Noisebridge!' {base_url}/api/text
+$ curl -X POST -F text='Hello, Noisebridge!' {base_url}/api/text
 
-$ curl -X POST -d @my_image.png {base_url}/api/image
+$ curl -X POST -F image=@my_image.png {base_url}/api/image
 
-$ curl -X POST -d @my_video.mp4 {base_url}/api/video
+$ curl -X POST -F video=@my_video.mp4 {base_url}/api/video
 '''.format(base_url=DEFAULT_BASE_URL)
     )
 
 
 @app.route('/api/<data_type>', methods=['POST'])
 def api(data_type):
-    assert data_type in ('txt', 'text', 'img', 'image', 'video')
+    try:
+        output = ft_lib.send(data_type, request)
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
-    if data_type in ('txt', 'text'):
-        try:
-            output = ft_lib.send_text('FAKE DEMO TEXT\n')
-        except Exception as e:
-            return jsonify({"error": str(e)})
-        return jsonify({"output": output.decode('utf-8')})
+    return jsonify({"output": output.decode('utf-8')})
 
 
 if __name__ == '__main__':
