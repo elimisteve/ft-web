@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import base64
 import datetime
 import os
 import subprocess
@@ -36,20 +37,35 @@ def _write_to_file(contents, ext, perms='wb'):
 
 
 def send(type_str, request):
-    if type_str in ('txt', 'text'):
-        data = request.form.get('txt') or request.form.get('text')
-        return send_text(data)
+    json_d = None
+    if 'application/json' in request.headers.get('Content-Type'):
+        json_d = request.get_json()
 
-    elif type_str in ('img', 'image'):
-        data = request.files.get('img') or request.files.get('image')
+    if type_str in ('txt', 'text',):
+        d = json_d or request.form
+        data = d.get('txt') or d.get('text')
         if data:
-            return send_image(data.read())
+            return send_text(data)
+        raise Exception('Got no text data! See /api for docs.')
+
+    elif type_str in ('img', 'image',):
+        d = json_d or request.files
+        data = d.get('img') or d.get('image')
+        if data:
+            if json_d:
+                return send_image(base64.decodestring(bytes(data, 'utf-8')))
+            else:
+                return send_image(data.read())
         raise Exception('Got no image data! See /api for docs.')
 
     elif type_str in ('vid', 'video',):
-        data = request.files.get('vid') or request.files.get('video')
+        d = json_d or request.files
+        data = d.get('vid') or d.get('video')
         if data:
-            return send_video(data.read())
+            if json_d:
+                return send_video(base64.decodestring(bytes(data, 'utf-8')))
+            else:
+                return send_video(data.read())
         raise Exception('Got no video data! See /api for docs.')
 
     raise Exception('type_str not in ' + ', '.join(VALID_EXTENSIONS))

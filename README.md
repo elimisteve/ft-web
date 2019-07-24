@@ -20,15 +20,29 @@ If you are physically at Noisebridge...
 
 ### CLI
 
-    curl -X POST -F text='Hello, Noisebridge!' http://pegasus.noise/api/text
+    export FT_WEB_BASE=http://pegasus.noise:4444
 
-    curl -X POST -F image=@my_image_goes_here.png http://pegasus.noise/api/image
+(When testing locally, use `http://127.0.0.1:4444` instead.)
 
-    curl -X POST -F video=@my_video.mp4 http://pegasus.noise/api/video
+Form POSTs:
+
+    curl -X POST -F text='Hello, Noisebridge!' ${FT_WEB_BASE}/api/text
+
+    curl -X POST -F image=@my_image_goes_here.png ${FT_WEB_BASE}/api/image
+
+    curl -X POST -F video=@my_video.mp4 ${FT_WEB_BASE}/api/video
+
+JSON POSTs:
+
+    curl -X POST -H 'Content-Type: application/json' -d '{"text": "Hello, Noisebridge!"}' ${FT_WEB_BASE}/api/text
+
+    curl -X POST -H 'Content-Type: application/json' -d '{"image": "'$(base64 my_image_goes_here.png | tr -d '\n')'"}' ${FT_WEB_BASE}/api/image
+
+    (echo -n '{"video": "'; base64 example_video.mp4; echo '"}' ) | curl -X POST -H 'Content-Type: application/json' -d @- ${FT_WEB_BASE}/api/video
 
 For full API docs, run
 
-    curl http://pegasus.noise:4444/api
+    curl ${FT_WEB_BASE}/api
 
 To use CLI tools to speak the FT-specific UDP protocol directly (and
 thus side-stepping this web UI and API), see

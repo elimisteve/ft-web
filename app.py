@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -35,6 +37,7 @@ def api(data_type):
     try:
         output = ft_lib.send(data_type, request)
     except Exception as e:
+        print('Error:', e)
         return jsonify({"error": str(e)})
 
     return jsonify({"output": output.decode('utf-8')})
