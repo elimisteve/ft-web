@@ -57,17 +57,18 @@ def send(type_str, request):
 
 def send_text(txt):
     filename = _write_to_file(txt, 'txt', perms='w')
-    return run_cmd('./bin/send-text -h ft.noise:1337 -O -f./fonts/6x10.bdf ' +
-                   _abs_path(filename))
+    return run_cmd('./bin/send-text -h ft.noise:1337 -l 14 -O -f./fonts/6x10.bdf < {}'.format(
+        _abs_path(filename))
+    )
 
 
 def send_image(img):
     filename = _write_to_file(img, 'img')
-    return run_cmd('./bin/send-image -h ft.noise:1337 -g10x20+15+7 ' +
+    return run_cmd('./bin/send-image -h ft.noise:1337 -l 14 -g10x20+15+7 ' +
                    _abs_path(filename))
 
 
 def send_video(vid):
     filename = _write_to_file(vid, 'vid')
-    return run_cmd('./bin/send-video -h ft.noise:1337 ' +
+    return run_cmd('./bin/send-video -h ft.noise:1337 -l 14 ' +
                    _abs_path(filename))
