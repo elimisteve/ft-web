@@ -44,11 +44,16 @@ git clone https://github.com/hzeller/flaschen-taschen
 cd flaschen-taschen/client
 bash debian_make_all.sh
 
-git clone https://github.com/elimisteve/ft-web ../../ft-web
-cd ../../ft-web
+cd ../../
+
+git clone https://github.com/elimisteve/ft-web ft-web
+cd ft-web
 mkdir bin
-cp ../../flaschen-taschen/client/send-* bin/
-sudo pip3 install -r requirements.txt  # or use mkvirtualenv or similar instead
+cp ../flaschen-taschen/client/send-{text,image,video} bin/
+
+sudo apt-get install python3-pip
+mkvirtualenv -p `which python3` ft-web  # requires virtualenvwrapper
+pip3 install -r requirements.txt
 python app.py
 ```
 
