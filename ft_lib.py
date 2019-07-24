@@ -73,7 +73,7 @@ def send(type_str, request):
 
 def send_text(txt):
     filename = _write_to_file(txt, 'txt', perms='w')
-    return run_cmd('./bin/send-text -h ft.noise:1337 -l 14 -O -f./fonts/6x10.bdf < {}'.format(
+    return run_cmd('./bin/send-text -h ft.noise:1337 -l 14 -O -f./fonts/6x10.bdf - < {}'.format(
         _abs_path(filename))
     )
 
