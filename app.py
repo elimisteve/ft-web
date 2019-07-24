@@ -23,11 +23,19 @@ def api_options():
         mimetype='text/plain',
         response='''How to use the /api/text, /api/image, and /api/video API endpoints:
 
-$ curl -X POST -F text='Hello, Noisebridge!' {base_url}/api/text
+    $ curl -X POST -F text='Hello, Noisebridge!' {base_url}/api/text
 
-$ curl -X POST -F image=@my_image.png {base_url}/api/image
+    $ curl -X POST -F image=@my_image.png {base_url}/api/image
 
-$ curl -X POST -F video=@my_video.mp4 {base_url}/api/video
+    $ curl -X POST -F video=@my_video.mp4 {base_url}/api/video
+
+Or send JSON rather than form-encoded data:
+
+    $ curl -X POST -H 'Content-Type: application/json' -d '{"text": "Hello, Noisebridge!"}' {base_url}/api/text
+
+    $ curl -X POST -H 'Content-Type: application/json' -d '{"image": "'$(base64 my_image.png | tr -d '\n')'"}' {base_url}/api/image
+
+    $ (echo -n '{"video": "'; base64 my_video.mp4; echo '"}' ) | curl -X POST -H 'Content-Type: application/json' -d @- {base_url}/api/video
 '''.format(base_url=DEFAULT_BASE_URL)
     )
 
