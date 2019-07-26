@@ -79,11 +79,11 @@ def send_text(txt):
 
 def send_image(img):
     filename = _write_to_file(img, 'img')
-    return run_cmd('./bin/send-image -h ft.noise:1337 -l 14 -g10x20+15+7 ' +
+    return run_cmd('./bin/send-image -h ft.noise:1337 -l 12 -g10x20+15+7 ' +
                    _abs_path(filename))
 
 
 def send_video(vid):
     filename = _write_to_file(vid, 'vid')
-    return run_cmd('./bin/send-video -h ft.noise:1337 -l 14 ' +
+    return run_cmd('./bin/send-video -h ft.noise:1337 -l 13 ' +
                    _abs_path(filename))
