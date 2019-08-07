@@ -79,7 +79,7 @@ def send_text(txt):
 
 def send_image(img):
     filename = _write_to_file(img, 'img')
-    return run_cmd('./bin/send-image -h ft.noise:1337 -l 12 -g10x20+15+7 ' +
+    return run_cmd('./bin/send-image -h ft.noise:1337 -l 12 -t 30 -c ' +
                    _abs_path(filename))
 
 
