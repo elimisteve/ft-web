@@ -66,6 +66,12 @@
           min-width: 1em;
         }
       }
+      .flash-error {
+        color: red;
+      }
+      ul#flashes {
+        list-style: none;
+      }
     </style>
   </head>
   <body>
@@ -75,6 +81,15 @@
       <h2>Welcome to FT Web!</h2>
     </div>
     <div style="margin-top: 70px;"></div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      <ul id="flashes">
+        {% for category, message in messages %}
+        <li class="flash-{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endwith %}
+
     <h3>Upload the text, image, or video you want to see displayed on the Flaschen-Taschen!</h3>
     <div style="margin-top: 10px;"></div>
     <div id="forms">
@@ -109,5 +124,6 @@
         <h5>Source</h5>
       </a>
     </div>
+    <script type="text/javascript" src="/static/js/form_action_append.js"></script>
   </body>
 </html>

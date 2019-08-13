@@ -1,8 +1,9 @@
 from __future__ import print_function
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, flash, redirect
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+app.secret_key = 'noisebridge'  # Not so secret, but...
 
 import ft_lib  # ./ft_lib.py
 import subprocess
@@ -46,9 +47,19 @@ def api(data_type):
         output = ft_lib.send(data_type, request)
     except Exception as e:
         print('Error:', e)
-        return jsonify({"error": str(e)})
+        if 'js-enabled' in request.args:
+            msg = str(e)
+            flash(msg, 'error')
+            return redirect('/')
+        else:
+            return jsonify({"error": str(e)})
 
-    return jsonify({"output": output.decode('utf-8')})
+    if 'js-enabled' in request.args:
+        msg = output.decode('utf-8')
+        flash(msg, 'error')
+        return redirect('/')
+    else:
+        return jsonify({"output": output.decode('utf-8')})
 
 
 if __name__ == '__main__':
