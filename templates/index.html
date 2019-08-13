@@ -99,19 +99,19 @@
           <input id="send-text" type="text" name="text" value="Hello from FT Web!" placeholder="Hello, Noisebridge!" style="height: 30px;" autofocus />
           <div style="display: inline;" onclick="document.getElementById('send-text').value = ''">&nbsp;(x)&nbsp;</div>
         </div>
-        <input type="submit" />
+        <input type="submit" value="Submit" />
       </form>
 
       <form method="POST" action="/api/image" enctype="multipart/form-data">
         <label for="image">Upload image or gif:</label>
         <input id="send-image" type="file" name="image" />
-        <input type="submit" />
+        <input type="submit" value="Submit" />
       </form>
 
       <form method="POST" action="/api/video" enctype="multipart/form-data">
         <label for="video">Upload video:</label>
         <input id="send-video" type="file" name="video" />
-        <input type="submit" />
+        <input type="submit" value="Submit" />
       </form>
     </div>
 
