@@ -44,7 +44,7 @@ Or send JSON rather than form-encoded data:
 @app.route('/api/<data_type>', methods=['POST'])
 def api(data_type):
     try:
-        output = ft_lib.send(data_type, request)
+        stdout_data, stderr_data = ft_lib.send(data_type, request)
     except Exception as e:
         print('Error:', e)
         if 'js-enabled' in request.args:
@@ -55,11 +55,15 @@ def api(data_type):
             return jsonify({"error": str(e)})
 
     if 'js-enabled' in request.args:
-        msg = output.decode('utf-8')
-        flash(msg, 'error')
+        # Only show stderr output, not stdout
+        if stderr_data:
+            flash(stderr_data.decode('utf-8'), 'error')
         return redirect('/')
     else:
-        return jsonify({"output": output.decode('utf-8')})
+        return jsonify({
+            "output": stdout_data.decode('utf-8'),
+            "error": stderr_data.decode('utf-8'),
+        })
 
 
 if __name__ == '__main__':

@@ -20,8 +20,8 @@ def run_cmd(cmd):
                                stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT)
 
-    stdout, _ = out.communicate()
-    return stdout
+    stdout_data, stderr_data = out.communicate()
+    return stdout_data, stderr_data
 
 
 def _abs_path(path):
