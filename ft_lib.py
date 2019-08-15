@@ -21,6 +21,8 @@ def run_cmd(cmd):
                                stderr=subprocess.STDOUT)
 
     stdout_data, stderr_data = out.communicate()
+    stdout_data = stdout_data or b''
+    stderr_data = stderr_data or b''
     return stdout_data, stderr_data
 
 
